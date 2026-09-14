@@ -4,7 +4,7 @@ A Python-based Retrieval-Augmented Generation (RAG) application that allows user
 
 The system retrieves relevant document chunks, builds citation-ready context, and uses Groq's `openai/gpt-oss-20b` model to generate answers with source citations.
 
-> This project was built incrementally from the ingestion layer to a complete end-to-end RAG application. The README documents not only the final architecture, but also the major engineering problems encountered and how they were solved.
+> This project was built incrementally from the ingestion layer to a complete end-to-end RAG application. This README documents not only the final architecture, but also the major engineering problems encountered and how they were solved.
 
 ---
 
@@ -257,7 +257,9 @@ For example:
 
 ```text
 [Source 1]
+
 Document: test.pdf
+
 Page: 1
 
 <context>
@@ -337,15 +339,12 @@ Building the project exposed several real problems that were not obvious from th
 ## 1. Chunk Explosion
 
 **Problem:**
-
 The CV produced 61 chunks instead of 14.
 
 **Cause:**
-
 The overlap algorithm could advance by only one character.
 
 **Solution:**
-
 Fixed the chunk progression logic so every iteration makes meaningful forward progress.
 
 **Result:**
@@ -359,11 +358,9 @@ Fixed the chunk progression logic so every iteration makes meaningful forward pr
 ## 2. ChromaDB → FAISS Migration
 
 **Problem:**
-
 The original vector-storage approach was not the final architecture we wanted.
 
 **Solution:**
-
 Migrated the storage layer to FAISS while preserving metadata and document-level operations.
 
 This required handling:
@@ -421,6 +418,7 @@ The chunk contained information including:
 
 ```text
 SINDH BOARD — SECONDARY EDUCATION
+
 Currently studying Grade 10
 ```
 
@@ -500,8 +498,6 @@ Current final test result:
 
 Manual testing was also performed through the Streamlit UI.
 
-Example successful questions include:
-
 ### Programming languages
 
 The application correctly identified:
@@ -563,25 +559,25 @@ tests/                 # Automated tests
 
 Create a virtual environment:
 
-```bash
+```powershell
 python -m venv .venv
 ```
 
 Activate it on Windows:
 
-```bash
+```powershell
 .venv\Scripts\activate
 ```
 
 Install dependencies:
 
-```bash
+```powershell
 pip install -r requirements.txt
 ```
 
 Create the environment file:
 
-```bash
+```powershell
 copy .env.example .env
 ```
 
@@ -600,13 +596,13 @@ Never commit a real API key.
 
 Start the application:
 
-```bash
+```powershell
 streamlit run streamlit_app.py
 ```
 
 Run the tests:
 
-```bash
+```powershell
 pytest -q
 ```
 
@@ -615,8 +611,6 @@ pytest -q
 # Current Status
 
 **Core RAG system: Complete ✅**
-
-The project currently includes:
 
 * document ingestion ✅
 * cleaning ✅
