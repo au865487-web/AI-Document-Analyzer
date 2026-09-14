@@ -1,0 +1,21 @@
+# Core
+python-dotenv>=1.0.0
+
+# Document extraction
+PyMuPDF>=1.24.0
+
+# Embeddings
+sentence-transformers>=3.0
+numpy>=1.24
+
+# Vector storage
+faiss-cpu>=1.9.0
+
+# LLM generation
+groq>=0.9.0
+
+# UI
+streamlit>=1.32.0
+
+# Development / test
+pytest>=8.0

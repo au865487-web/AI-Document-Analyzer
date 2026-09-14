@@ -1,0 +1,33 @@
+# Environment secrets
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Test / tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Runtime data created by the app
+data/documents/*
+!data/documents/.gitkeep
+data/faiss/*
+!data/faiss/.gitkeep
+data/chroma/*
+!data/chroma/.gitkeep
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
