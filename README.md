@@ -2,9 +2,9 @@
 
 A Python-based Retrieval-Augmented Generation (RAG) application that allows users to upload PDF/TXT documents, search them semantically, and ask questions grounded in those documents.
 
-The system retrieves relevant document chunks, builds citation-ready context, and uses Groq's `openai/gpt-oss-20b` model to generate answers with source citations.
+The system retrieves relevant document chunks, builds citation-ready context, and uses Groq's `openai/gpt-oss-20b` model to generate grounded answers with source citations.
 
-> This project was built incrementally from the ingestion layer to a complete end-to-end RAG application. This README documents not only the final architecture, but also the major engineering problems encountered and how they were solved.
+> This project was built incrementally from the ingestion layer to a complete end-to-end RAG application. This README documents the final architecture, major engineering problems, and the solutions used to solve them.
 
 ---
 
@@ -34,9 +34,12 @@ Groq LLM
 Answer + Citations
 ```
 
-A user can upload documents, index them, and ask questions about their contents through a Streamlit interface.
+Users can upload documents, index them, and ask questions about their contents through a Streamlit interface.
 
-The system is designed to avoid answering questions when the available documents do not provide enough information.
+The system is designed to avoid generating answers when the available documents do not provide enough information.
+
+---
+
 ## Demo
 
 The application provides a Streamlit interface for uploading documents, indexing them, asking questions, and viewing grounded answers with source citations.
@@ -59,7 +62,6 @@ The system also refuses to invent answers when the requested information is not 
 
 > Screenshots and a visual demo will be added as part of the final portfolio presentation.
 
-
 ---
 
 ## Features
@@ -75,11 +77,11 @@ The system also refuses to invent answers when the requested information is not 
 * Document replacement and deletion
 * Citation-aware context building
 * Groq LLM answer generation
-* Source/document/page/chunk citations
+* Source, document, page, and chunk citations
 * Hallucination-resistant fallback responses
 * Streamlit UI
-* Automated test suite
 * Persistent FAISS index and metadata
+* Automated test suite
 
 ---
 
@@ -135,7 +137,7 @@ The extraction layer therefore returns page-aware data rather than only one larg
 
 Documents were cleaned and divided into smaller chunks before embedding.
 
-### A major chunking bug
+### A Major Chunking Bug
 
 During testing with the CV, the chunker unexpectedly produced:
 
@@ -169,7 +171,7 @@ After the fix:
 
 All tests continued passing.
 
-### Remaining chunking limitation
+### Remaining Chunking Limitation
 
 Some overlap chunks can still begin in the middle of a word.
 
@@ -187,7 +189,7 @@ all-MiniLM-L6-v2
 
 The same embedding model is used for both documents and queries.
 
-The vectors are normalized and used with FAISS inner-product similarity, effectively giving cosine-similarity behavior.
+The vectors are normalized and used with FAISS inner-product similarity, effectively providing cosine-similarity behavior.
 
 ---
 
@@ -214,9 +216,9 @@ Metadata is stored separately so that the application can associate vector IDs w
 * chunk text
 * page numbers
 
-### Why this mattered
+### Why This Mattered
 
-The application needed more than just vector similarity. It also needed to know:
+The application needed more than vector similarity. It also needed to know:
 
 > Which document did this result come from?
 
@@ -313,9 +315,9 @@ The generation system was designed with a strict grounding rule:
 
 > Answer using the provided document context and do not guess when the information is unavailable.
 
-This was important because a RAG application should not simply produce a plausible answer when the retrieved documents do not support it.
+This is important because a RAG application should not simply produce a plausible answer when the retrieved documents do not support it.
 
-### Unsupported questions
+### Unsupported Questions
 
 For questions outside the indexed documents, the system returns a safe fallback:
 
@@ -360,16 +362,19 @@ Building the project exposed several real problems that were not obvious from th
 
 ## 1. Chunk Explosion
 
-**Problem:**
+**Problem**
+
 The CV produced 61 chunks instead of 14.
 
-**Cause:**
+**Cause**
+
 The overlap algorithm could advance by only one character.
 
-**Solution:**
+**Solution**
+
 Fixed the chunk progression logic so every iteration makes meaningful forward progress.
 
-**Result:**
+**Result**
 
 ```text
 61 → 14 chunks
@@ -379,10 +384,12 @@ Fixed the chunk progression logic so every iteration makes meaningful forward pr
 
 ## 2. ChromaDB → FAISS Migration
 
-**Problem:**
+**Problem**
+
 The original vector-storage approach was not the final architecture we wanted.
 
-**Solution:**
+**Solution**
+
 Migrated the storage layer to FAISS while preserving metadata and document-level operations.
 
 This required handling:
@@ -392,7 +399,7 @@ This required handling:
 * document deletion
 * persistence
 * similarity search
-* index rebuilding/loading
+* index loading
 
 ---
 
@@ -412,7 +419,7 @@ This initially looked like a persistence failure.
 
 We tested the actual file replacement behavior and performed controlled save operations.
 
-The final controlled tests showed that the synchronous `_save()` implementation was working correctly and the current persisted state was healthy.
+The final controlled tests showed that the synchronous `_save()` implementation was working correctly and the persisted state was healthy.
 
 The project was left with the existing persistence implementation rather than rewriting a working storage layer based on a transient state.
 
@@ -464,11 +471,11 @@ and the context source limit was increased to:
 MAX_SOURCES = 10
 ```
 
-This allows the lower-ranked relevant result to reach the context-building stage.
+This allows lower-ranked relevant results to reach the context-building stage.
 
-### Important remaining limitation
+### Important Remaining Limitation
 
-Even after increasing retrieval depth, the natural-language education question still sometimes produces the fallback response in the Streamlit UI.
+Even after increasing retrieval depth, the natural-language education question can still produce the fallback response in the Streamlit UI.
 
 This means the project still has a **retrieval-quality edge case**.
 
@@ -482,8 +489,8 @@ The system works correctly for the majority of tested questions, and the remaini
 
 A RAG system can fail in two opposite ways:
 
-1. retrieve irrelevant information and confidently answer
-2. refuse to answer even when the information exists
+1. Retrieve irrelevant information and confidently answer.
+2. Refuse to answer even when the information exists.
 
 The application was explicitly designed to prioritize grounded answers.
 
@@ -520,7 +527,7 @@ Current final test result:
 
 Manual testing was also performed through the Streamlit UI.
 
-### Programming languages
+### Programming Languages
 
 The application correctly identified:
 
@@ -531,7 +538,7 @@ The application correctly identified:
 
 with source citations.
 
-### AI projects
+### AI Projects
 
 The application correctly identified multiple AI-related projects and provided citations.
 
@@ -539,11 +546,11 @@ The application correctly identified multiple AI-related projects and provided c
 
 The application correctly identified PostgreSQL and SQL-related skills.
 
-### Unsupported information
+### Unsupported Information
 
 The application correctly refused to answer information that was not present in the document.
 
-### Known edge case
+### Known Edge Case
 
 Educational-background questions can still fail when semantic retrieval ranks the relevant chunk too low.
 
