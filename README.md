@@ -37,6 +37,28 @@ Answer + Citations
 A user can upload documents, index them, and ask questions about their contents through a Streamlit interface.
 
 The system is designed to avoid answering questions when the available documents do not provide enough information.
+## Demo
+
+The application provides a Streamlit interface for uploading documents, indexing them, asking questions, and viewing grounded answers with source citations.
+
+### Example
+
+```text
+Question:
+What programming languages does Abdullah know?
+
+Answer:
+Abdullah knows Python, JavaScript, TypeScript, and SQL.
+
+Sources:
+[Source 1] test.pdf (Page 1)
+[Source 3] test.pdf (Page 1)
+```
+
+The system also refuses to invent answers when the requested information is not supported by the indexed documents.
+
+> Screenshots and a visual demo will be added as part of the final portfolio presentation.
+
 
 ---
 
