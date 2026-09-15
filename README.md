@@ -44,6 +44,18 @@ The system is designed to avoid generating answers when the available documents 
 
 The application provides a Streamlit interface for uploading documents, indexing them, asking questions, and viewing grounded answers with source citations.
 
+### Document Upload & Indexing
+
+![Document Upload](screenshots/upload.png)
+
+### Grounded Answer with Citations
+
+![RAG Answer](screenshots/rag-answer.png)
+
+### Hallucination Prevention
+
+![Unsupported Question](screenshots/fallback.png)
+
 ### Example
 
 ```text
@@ -56,13 +68,6 @@ Abdullah knows Python, JavaScript, TypeScript, and SQL.
 Sources:
 [Source 1] test.pdf (Page 1)
 [Source 3] test.pdf (Page 1)
-```
-
-The system also refuses to invent answers when the requested information is not supported by the indexed documents.
-
-> Screenshots and a visual demo will be added as part of the final portfolio presentation.
-
----
 
 ## Features
 
